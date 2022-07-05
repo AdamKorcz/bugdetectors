@@ -3,7 +3,6 @@ package io
 import (
 	"bytes"
 	"runtime/debug"
-	"fmt"
 	"io"
 )
 
