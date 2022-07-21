@@ -16,11 +16,16 @@ var (
 func ReadAll(r io.Reader, s string) ([]byte, error) {
 	buf := new(bytes.Buffer)
 	// Read bytes with a limit to not exhaust memory.
-	buf.ReadFrom(io.LimitReader(r, 1500000000))
+	buf.ReadFrom(io.LimitReader(r, 1000000000))
 	bufferLength := buf.Len()
 	if bufferLength > MaxBufferSize {
 		var msg strings.Builder
 		msg.WriteString("A large buffer can be passed to an API that will exhaust this machines memory")
+		msg.WriteString(`The fuzzer was able to pass a buffer larger than 
+			10000. Based on that we are assuming that there is 
+			no uppper limit to the size of the buffer. This is a 
+			security issue that can be used to exhaust the machines memory.
+			For more information, see CWE-400: Uncontrolled Resource Consumption.`)
 		msg.WriteString("The faulty line:\n")
 		msg.WriteString(strings.Replace(s, "NEW_LINE", "\n", -1))
 		msg.WriteString("\n")
