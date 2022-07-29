@@ -16,7 +16,7 @@ func GetDescription(faultyLine string) string {
 	sb.WriteString("\n# (This bug detector is currently in beta)\n")
 	sb.WriteString("\n# A large buffer can be passed to an API that can exhaust the machines memory.\n")
 	sb.WriteString(`# The fuzzer was able to pass a buffer with a length larger than 1000000.
-# Based on that we are assuming that there is no uppper limit to the size of the buffer.
+# Because of that there is reason to believe there is no uppper limit to the size of the buffer.
 # For more information on the security implications, see "CWE-400: Uncontrolled Resource Consumption".`)
 	sb.WriteString("\n\n# The vulnerable API is:\n\n")
 	sb.WriteString(strings.Replace(faultyLine, "NEW_LINE", "\n", -1))
