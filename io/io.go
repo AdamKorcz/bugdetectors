@@ -7,8 +7,26 @@ import (
 )
 
 var (
-	MaxBufferSize = 10000
+	MaxBufferSize = 1000000
 )
+
+func GetDescription(faultyLine string) string {
+	var sb strings.Builder
+
+	sb.WriteString("\n# A large buffer can be passed to an API that can exhaust the machines memory.\n")
+	sb.WriteString(`# The fuzzer was able to pass a buffer larger than 1000000.
+# Based on that we are assuming that there is no uppper limit to the size of the buffer.
+# For more information on the security implications, see "CWE-400: Uncontrolled Resource Consumption".`)
+	sb.WriteString("\n\n# The faulty line:\n\n")
+	sb.WriteString(strings.Replace(faultyLine, "NEW_LINE", "\n", -1))
+	sb.WriteString("\n\n")
+	sb.WriteString(`# To mitigate this issue, it is advised to add a limit to the bytes being read. 
+# If this line reads untrusted input, it should be triaged 
+# for the possibility of exploiting this in a real-world scenario.
+# If it can be exploited, then the issue is a security vulnerability.`)
+	sb.WriteString("\n")
+	return sb.String()
+}
 
 // Checks whether a large reader is passed to io.ReadAll.
 // The "s" parameter is a string with the location of the
@@ -19,22 +37,7 @@ func ReadAll(r io.Reader, s string) ([]byte, error) {
 	buf.ReadFrom(io.LimitReader(r, 1000000000))
 	bufferLength := buf.Len()
 	if bufferLength > MaxBufferSize {
-		var msg strings.Builder
-		msg.WriteString("A large buffer can be passed to an API that will exhaust this machines memory")
-		msg.WriteString(`The fuzzer was able to pass a buffer larger than 
-			10000. Based on that we are assuming that there is 
-			no uppper limit to the size of the buffer. This is a 
-			security issue that can be used to exhaust the machines memory.
-			For more information, see CWE-400: Uncontrolled Resource Consumption.`)
-		msg.WriteString("The faulty line:\n")
-		msg.WriteString(strings.Replace(s, "NEW_LINE", "\n", -1))
-		msg.WriteString("\n")
-		msg.WriteString(`To mitigate this issue, it is advised to
-			add a limit to the bytes being read.
-			If this line reads untrusted input, it should be triaged 
-			for the possibility of executing this attack in a real-world 
-			scenario. If it can, then the issue is a security vulnerability.`)
-		panic(msg.String())
+		panic(GetDescription(s))
 	}
 	return buf.Bytes(), nil
 }
