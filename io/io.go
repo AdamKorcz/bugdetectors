@@ -17,7 +17,7 @@ func GetDescription(faultyLine string) string {
 	sb.WriteString(`# The fuzzer was able to pass a buffer larger than 1000000.
 # Based on that we are assuming that there is no uppper limit to the size of the buffer.
 # For more information on the security implications, see "CWE-400: Uncontrolled Resource Consumption".`)
-	sb.WriteString("\n\n# The faulty line:\n\n")
+	sb.WriteString("\n\n# The vulnerable API is:\n\n")
 	sb.WriteString(strings.Replace(faultyLine, "NEW_LINE", "\n", -1))
 	sb.WriteString("\n\n")
 	sb.WriteString(`# To mitigate this issue, it is advised to add a limit to the bytes being read. 
@@ -36,8 +36,22 @@ func ReadAll(r io.Reader, s string) ([]byte, error) {
 	// Read bytes with a limit to not exhaust memory.
 	buf.ReadFrom(io.LimitReader(r, 1000000000))
 	bufferLength := buf.Len()
-	if bufferLength > MaxBufferSize {
-		panic(GetDescription(s))
+	// A bit hacky trick trick a coverage guided fuzzer
+	// into generating a large buffer.
+	if bufferLength > 10000 {
+		if bufferLength > 50000 {
+			if bufferLength > 100000 {
+				if bufferLength > 200000 {
+					if bufferLength > 500000 {
+						if bufferLength > 800000 {
+							if bufferLength > MaxBufferSize {
+								panic(GetDescription(s))
+							}							
+						}
+					}
+				}
+			}
+		}
 	}
 	return buf.Bytes(), nil
 }
