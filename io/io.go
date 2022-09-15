@@ -37,7 +37,7 @@ func ReadAll(r io.Reader, s string) ([]byte, error) {
 	// Read bytes with a limit to not exhaust memory.
 	buf.ReadFrom(io.LimitReader(r, 1000000000))
 	bufferLength := buf.Len()
-	// A bit hacky trick trick a coverage guided fuzzer
+	// A bit hacky trick to trick a coverage guided fuzzer
 	// into generating a large buffer.
 	if bufferLength > 10000 {
 		if bufferLength > 50000 {
@@ -47,7 +47,7 @@ func ReadAll(r io.Reader, s string) ([]byte, error) {
 						if bufferLength > 800000 {
 							if bufferLength > MaxBufferSize {
 								panic(GetDescription(s))
-							}							
+							}
 						}
 					}
 				}
