@@ -1,8 +1,6 @@
 package bytes
 
 import (
-	"bytes"
-	"reflect"
 	"strings"
 )
 
