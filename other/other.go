@@ -1,8 +1,6 @@
 package other
 
 import (
-	"fmt"
-	"reflect"
 	"strings"
 )
 
@@ -17,10 +15,8 @@ func GetDescription() string {
 	return sb.String()
 }
 
-func CheckLength(b []byte, i interface{}) {
-	fmt.Println(reflect.TypeOf(i))
-	/*if len(b) > MaxBufferSize {
+func CheckLength(i int) {
+	if i > MaxBufferSize {
 		panic(GetDescription())
 	}
-	return b*/
 }
