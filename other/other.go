@@ -15,8 +15,9 @@ func GetDescription() string {
 	return sb.String()
 }
 
-func CheckLength(i int64) {
+func CheckLength(i int64) int64 {
 	if i > int64(MaxBufferSize) {
 		panic(GetDescription())
 	}
+	return i
 }
