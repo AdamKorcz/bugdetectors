@@ -17,7 +17,7 @@ func GetDescription() string {
 	return sb.String()
 }
 
-func CheckLen(b []byte, i interface{}) {
+func CheckLength(b []byte, i interface{}) {
 	fmt.Println(reflect.TypeOf(i))
 	/*if len(b) > MaxBufferSize {
 		panic(GetDescription())
