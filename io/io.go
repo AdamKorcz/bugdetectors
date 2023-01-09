@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	MaxBufferSize = 240000
+	MaxBufferSize = 200000
 )
 
 func GetDescription(faultyLine string) string {
@@ -296,42 +296,6 @@ func ReadAll(r io.Reader, s string) ([]byte, error) {
 		return buf.Bytes(), nil
 	}
 	if bufferLength < 198000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 202000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 205000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 208000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 212000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 215000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 218000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 222000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 225000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 228000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 232000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 235000 {
-		return buf.Bytes(), nil
-	}
-	if bufferLength < 238000 {
 		return buf.Bytes(), nil
 	}
 	if bufferLength > MaxBufferSize {
