@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	MaxBufferSize = 200000
+	MaxBufferSize = 92000
 )
 
 func GetDescription(faultyLine string) string {
