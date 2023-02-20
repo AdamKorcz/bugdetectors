@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-var MaxBufferSize = 100000
+var MaxBufferSize = 95000
 
 func GetDescription() string {
 	var sb strings.Builder
@@ -592,36 +592,6 @@ func CheckLength(i int64) int64 {
 		return i
 	}
 	if length < 95000 {
-		return i
-	}
-	if length < 95500 {
-		return i
-	}
-	if length < 96000 {
-		return i
-	}
-	if length < 96500 {
-		return i
-	}
-	if length < 97000 {
-		return i
-	}
-	if length < 97500 {
-		return i
-	}
-	if length < 98000 {
-		return i
-	}
-	if length < 98500 {
-		return i
-	}
-	if length < 99000 {
-		return i
-	}
-	if length < 99500 {
-		return i
-	}
-	if length < 100000 {
 		return i
 	}
 	panic(GetDescription())
