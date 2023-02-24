@@ -9,6 +9,7 @@ var MaxBufferSize = 95000
 func GetDescription() string {
 	var sb strings.Builder
 
+	sb.WriteString("fatal error: runtime: out of memory\n")
 	sb.WriteString("\n# (This bug detector is currently in beta and as a result the report is limited. \n")
 	sb.WriteString("\n# See the stacktrace for more info.) \n")
 	sb.WriteString("\n We have found an issue \n")
