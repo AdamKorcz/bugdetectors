@@ -13,6 +13,7 @@ var (
 func GetDescription(faultyLine string) string {
 	var sb strings.Builder
 
+	sb.WriteString("fatal error: out of memory")
 	sb.WriteString("\n# (This bug detector is currently in beta)\n")
 	sb.WriteString("\n# A large buffer can be passed to an API that can exhaust the machines memory.\n")
 	sb.WriteString(`# The fuzzer was able to pass a buffer with a length larger than 1000000.
