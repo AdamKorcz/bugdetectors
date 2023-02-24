@@ -9,6 +9,7 @@ var MaxBufferSize = 1000000
 func GetDescription(faultyLine string) string {
 	var sb strings.Builder
 
+	sb.WriteString("fatal error: out of memory\n")
 	sb.WriteString("\n# (This bug detector is currently in beta) \n")
 	sb.WriteString("\n We have found an issue \n")
 	sb.WriteString("\n# The vulnerable API is: \n\n")
