@@ -8,6 +8,7 @@ import (
 
 var (
 	MaxBufferSize = 1000000
+	CheckLength = true
 )
 
 func GetDescription(faultyLine string) string {
@@ -30,10 +31,33 @@ func GetDescription(faultyLine string) string {
 	return sb.String()
 }
 
+func GetDescriptionNoLengthCheck(faultyLine string) string {
+	var sb strings.Builder
+
+	sb.WriteString("fatal error: out of memory")
+	sb.WriteString("\n# (This bug detector is currently in beta)\n")
+	sb.WriteString("\n# The fuzzer reached an API that can exhaust the machines memory.\n The API does not limit the size of the buffer that can be read and is at risk of exploitation.")
+	sb.WriteString(`# The fuzzer did not check whether a large buffer could be read.
+# For more information on the security implications, see "CWE-400: Uncontrolled Resource Consumption".`)
+	sb.WriteString("\n\n# The vulnerable API is:\n\n")
+	sb.WriteString(strings.Replace(faultyLine, "NEW_LINE", "\n", -1))
+	sb.WriteString("\n\n")
+	sb.WriteString(`# To mitigate this issue, it is advised to add a limit to the bytes being read. 
+# If this line reads untrusted input, it should be triaged 
+# for the possibility of exploiting this in a real-world scenario.
+# If it can be exploited, then the issue is a security vulnerability.`)
+	sb.WriteString("\n")
+	return sb.String()
+}
+
+
 // Checks whether a large reader is passed to ioutil.ReadAll.
 // The "s" parameter is a string with the location of the
 // faulty code. This is generated during instrumentation.
 func ReadAll(r io.Reader, s string) ([]byte, error) {
+	if !CheckLength {
+		panic(GetDescriptionNoLengthCheck(s))
+	}
 	buf := new(bytes.Buffer)
 	// Read bytes with a limit to not exhaust memory.
 	buf.ReadFrom(io.LimitReader(r, 1000000000))
