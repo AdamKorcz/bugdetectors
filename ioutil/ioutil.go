@@ -2,7 +2,6 @@ package ioutil
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"reflect"
