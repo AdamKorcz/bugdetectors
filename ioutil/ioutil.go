@@ -2,13 +2,15 @@ package ioutil
 
 import (
 	"bytes"
+	"fmt"
 	"io"
+	"io/ioutil"
+	"reflect"
 	"strings"
 )
 
 var (
 	MaxBufferSize = 1000000
-	CheckLength = true
 )
 
 func GetDescription(faultyLine string) string {
@@ -50,12 +52,16 @@ func GetDescriptionNoLengthCheck(faultyLine string) string {
 	return sb.String()
 }
 
-
 // Checks whether a large reader is passed to ioutil.ReadAll.
 // The "s" parameter is a string with the location of the
 // faulty code. This is generated during instrumentation.
-func ReadAll(r io.Reader, s string) ([]byte, error) {
-	if !CheckLength {
+func ReadAll(r io.Reader, s string, checkLength bool) ([]byte, error) {
+	readerType := reflect.TypeOf(r).String()
+	switch readerType {
+	case "*http.maxBytesReader", "*io.LimitedReader":
+		return ioutil.ReadAll(r)
+	}
+	if !checkLength {
 		panic(GetDescriptionNoLengthCheck(s))
 	}
 	buf := new(bytes.Buffer)
@@ -79,5 +85,5 @@ func ReadAll(r io.Reader, s string) ([]byte, error) {
 			}
 		}
 	}
-	return buf.Bytes(), nil
+	return ioutil.ReadAll(r)
 }
